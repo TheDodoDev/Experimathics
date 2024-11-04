@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -62,6 +63,10 @@ public class PlayerControl : MonoBehaviour
     {
         rb.AddForce(moveDirection.normalized * movementSpeed, ForceMode.Acceleration);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, movementSpeed);
+        if (SceneManager.GetActiveScene().name == "Aimemathics I Scene")
+        {
+            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+        }
     }
 
     void CheckIfOnGround()
@@ -78,4 +83,13 @@ public class PlayerControl : MonoBehaviour
             isGrounded = true;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "Portal_Aimemathics_I")
+        {
+            SceneManager.LoadScene("Aimemathics I Scene");
+        }
+    }
+
 }
