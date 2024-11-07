@@ -81,7 +81,29 @@ public class SphereBehavior : MonoBehaviour
         {
             sphere.SetActive(true);
             sphere.transform.position = new Vector3(UnityEngine.Random.Range(-7, 9) * 2, UnityEngine.Random.Range(2, 10) * 2, 10f);
-            texts[index].transform.position = sphere.transform.position + Vector3.up * 1.25f;
+            bool flag = true;
+            while (flag)
+            {
+                foreach (GameObject sphere1 in spheres)
+                {
+                    if (!sphere1.Equals(sphere) && sphere1.transform.position.Equals(sphere.transform.position))
+                    {
+                        sphere.transform.position = new Vector3(UnityEngine.Random.Range(-7, 9) * 2, UnityEngine.Random.Range(2, 10) * 2, 10f);
+                    }
+                }
+                foreach (GameObject sphere1 in spheres)
+                {
+                    if (!sphere1.Equals(sphere) && sphere1.transform.position.Equals(sphere.transform.position))
+                    {
+                        break;
+                    }
+                    if (sphere1.Equals(spheres[spheres.Count - 1]))
+                    {
+                        flag = false;
+                    }
+                }
+            }
+            texts[index].transform.position = sphere.transform.position + Vector3.back * 1.25f;
             numbers[index] = UnityEngine.Random.Range(0, target + 10);
             while (numbers[index].Equals(target))
             {

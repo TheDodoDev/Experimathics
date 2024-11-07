@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCam : MonoBehaviour
 {
@@ -9,11 +12,14 @@ public class PlayerCam : MonoBehaviour
     [Range(0.1f, 10.0f)] [SerializeField] float sensX, sensY;
 
     [SerializeField] Transform orientation;
-    [SerializeField] GameObject crosshair;
     [SerializeField] GameObject sphereBehaviorManager;
+    [SerializeField] Text scoreText, accuracyText;
     private float xRotation, yRotation;
+    private int score;
+    private float shotsFired, shotsHit;
     void Start()
     {
+        score = 0;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -21,6 +27,13 @@ public class PlayerCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        scoreText.text = "Score: " + score;
+        if (shotsFired > 0)
+        {
+            
+            accuracyText.text = "Accuracy: " + Math.Round((shotsHit * 100f / shotsFired),2);
+            Debug.Log(shotsHit + "/" + shotsFired);
+        }
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX * 100;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY * 100;
 
@@ -32,25 +45,21 @@ public class PlayerCam : MonoBehaviour
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
 
-        Vector3 targetPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0.5f);
-
-        targetPos = Camera.main.ScreenToWorldPoint(targetPos);
-
-        crosshair.transform.position = targetPos;
-
-        crosshair.transform.LookAt(transform);
-
         if (Input.GetMouseButtonDown(0))
         {
+            shotsFired += 1.0f;
             Ray shot = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             Physics.Raycast(shot, out hit, 60);
             if (hit.collider != null && hit.collider.name == "Sphere_" + sphereBehaviorManager.GetComponent<SphereBehavior>().GetCorrectIndex()) 
             {
+                shotsHit++;
+                score++;
                 sphereBehaviorManager.GetComponent<SphereBehavior>().Randomize();
             }
             else if(hit.collider != null && hit.collider.name != "Sphere_" + sphereBehaviorManager.GetComponent<SphereBehavior>().GetCorrectIndex() && hit.collider.name.Contains("Sphere"))
             {
+                score--;
                 hit.collider.gameObject.SetActive(false);
             }
             Debug.DrawRay(shot.origin, shot.direction * 60, Color.yellow, 2f);
