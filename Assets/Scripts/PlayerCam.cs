@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerCam : MonoBehaviour
@@ -27,7 +28,6 @@ public class PlayerCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = "Score: " + score;
         if (shotsFired > 0)
         {
             
@@ -45,7 +45,7 @@ public class PlayerCam : MonoBehaviour
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && SceneManager.GetActiveScene().name == "Aimemathics I Scene")
         {
             shotsFired += 1.0f;
             Ray shot = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -55,11 +55,13 @@ public class PlayerCam : MonoBehaviour
             {
                 shotsHit++;
                 score++;
+                scoreText.text = "Score: " + score;
                 sphereBehaviorManager.GetComponent<SphereBehavior>().Randomize();
             }
             else if(hit.collider != null && hit.collider.name != "Sphere_" + sphereBehaviorManager.GetComponent<SphereBehavior>().GetCorrectIndex() && hit.collider.name.Contains("Sphere"))
             {
                 score--;
+                scoreText.text = "Score: " + score;
                 hit.collider.gameObject.SetActive(false);
             }
             Debug.DrawRay(shot.origin, shot.direction * 60, Color.yellow, 2f);
