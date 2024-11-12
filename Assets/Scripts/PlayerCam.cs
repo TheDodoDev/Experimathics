@@ -14,6 +14,7 @@ public class PlayerCam : MonoBehaviour
 
     [SerializeField] Transform orientation;
     [SerializeField] GameObject sphereBehaviorManager;
+    [SerializeField] GameObject numPadManager;
     [SerializeField] Text scoreText, accuracyText;
     private float xRotation, yRotation;
     private int score;
@@ -28,6 +29,7 @@ public class PlayerCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        scoreText.text = "Score: " + score;
         if (shotsFired > 0)
         {
             
@@ -64,7 +66,38 @@ public class PlayerCam : MonoBehaviour
                 scoreText.text = "Score: " + score;
                 hit.collider.gameObject.SetActive(false);
             }
-            Debug.DrawRay(shot.origin, shot.direction * 60, Color.yellow, 2f);
+        }
+        if(Input.GetMouseButtonDown(0) && SceneManager.GetActiveScene().name == "Aimemathics II Scene")
+        {
+            shotsFired += 1.0f;
+            Ray shot = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            Physics.Raycast(shot, out hit, 60);
+            if (hit.collider != null && hit.collider.name.Contains("NumPad_") && hit.collider.name.Length == 8)
+            {
+                shotsHit++;
+                numPadManager.GetComponent<NumPadManager>().AddDigit(hit.collider.name[^1] - '0');
+                
+            }
+            if(hit.collider != null && hit.collider.name.Substring(7).Equals("Enter"))
+            {
+                shotsHit++;
+                bool correct = numPadManager.GetComponent<NumPadManager>().Verify();
+                if (correct)
+                {
+                    numPadManager.GetComponent<NumPadManager>().Randomize();
+                    score++;
+                }
+                else
+                {
+                    score--;
+                }
+            }
+            if (hit.collider != null && hit.collider.name.Substring(7).Equals("Back"))
+            {
+                shotsHit++;
+                numPadManager.GetComponent<NumPadManager>().RemoveDigit();
+            }
         }
     }
 }
