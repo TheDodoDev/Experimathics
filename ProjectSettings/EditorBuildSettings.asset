@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Aimemathics I Scene.unity
     guid: 48e64d78e1257454aaf07485a5ccaf38
+  - enabled: 1
+    path: Assets/Scenes/Aimemathics II Scene.unity
+    guid: 0e4be4844995f674fba3b18154b2da20
   m_configObjects: {}

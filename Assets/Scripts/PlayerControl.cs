@@ -90,6 +90,10 @@ public class PlayerControl : MonoBehaviour
         {
             SceneManager.LoadScene("Aimemathics I Scene");
         }
+        if(other.gameObject.name == "Portal_Aimemathics_II")
+        {
+            SceneManager.LoadScene("Aimemathics II Scene");
+        }
     }
 
 }

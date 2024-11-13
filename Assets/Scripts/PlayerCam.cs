@@ -29,7 +29,10 @@ public class PlayerCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = "Score: " + score;
+        if (SceneManager.GetActiveScene().name != "LobbyScene")
+        {
+            scoreText.text = "Score: " + score;
+        }
         if (shotsFired > 0)
         {
             
