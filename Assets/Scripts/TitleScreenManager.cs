@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TitleScreenManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton, loginButton, registerButton;
+    [SerializeField] GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton, loginButton, registerButton, nameInputText, passwordInputText;
 
     private const int STUDENT = 0;
     private const int TEACHER = 1;
@@ -63,5 +66,35 @@ public class TitleScreenManager : MonoBehaviour
     public void CreateUser()
     {
         
+    }
+
+    public void Login()
+    {
+        if (mode == STUDENT)
+        {
+            if (CheckIfStringsEqual(nameInputText.GetComponent<TextMeshProUGUI>().text.ToString(), "S") && CheckIfStringsEqual(passwordInputText.GetComponent<TextMeshProUGUI>().text.ToString(), "1"))
+            {
+
+                SceneManager.LoadScene("LobbyScene");
+            }
+        }
+    }
+
+    public bool CheckIfStringsEqual(string s1, string s2)
+    {
+        Debug.Log(s1[^1]);
+        if (s1.Length - 1 == s2.Length)
+        {
+            for (int i = 0; i < s1.Length - 1; i++)
+            {
+                Debug.Log(s1[i] + " " + s2[i]);
+                if (s1[i] != s2[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
