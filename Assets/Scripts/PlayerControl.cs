@@ -12,7 +12,6 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] float sprintSpeed;
     [SerializeField] Transform orientation;
     [SerializeField] float jumpForce;
-
     private float horizontalInput, verticalInput;
 
     private float movementSpeed;
@@ -47,7 +46,6 @@ public class PlayerControl : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
-
         if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
         {
             movementSpeed = sprintSpeed;
@@ -63,7 +61,7 @@ public class PlayerControl : MonoBehaviour
     {
         rb.AddForce(moveDirection.normalized * movementSpeed, ForceMode.Acceleration);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, movementSpeed);
-        if (SceneManager.GetActiveScene().name == "Aimemathics I Scene")
+        if (SceneManager.GetActiveScene().name == "Aimemathics I Scene" || SceneManager.GetActiveScene().name == "Aimemathics II Scene")
         {
             rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
         }

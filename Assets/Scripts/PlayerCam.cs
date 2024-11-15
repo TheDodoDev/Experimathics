@@ -15,15 +15,19 @@ public class PlayerCam : MonoBehaviour
     [SerializeField] Transform orientation;
     [SerializeField] GameObject sphereBehaviorManager;
     [SerializeField] GameObject numPadManager;
-    [SerializeField] Text scoreText, accuracyText;
+    [SerializeField] Text scoreText, accuracyText, timerText;
+    private GameObject playerData;
+
     private float xRotation, yRotation;
     private int score;
     private float shotsFired, shotsHit;
     void Start()
     {
+        playerData = GameObject.Find("PlayerData");
         score = 0;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        if (SceneManager.GetActiveScene().name != "LobbyScene" && SceneManager.GetActiveScene().name != "TitleScene") StartCoroutine(Timer());
     }
 
     // Update is called once per frame
@@ -102,5 +106,20 @@ public class PlayerCam : MonoBehaviour
                 numPadManager.GetComponent<NumPadManager>().RemoveDigit();
             }
         }
+    }
+
+    IEnumerator Timer()
+    {
+        int time = 30;
+        timerText.text = "Time Left: " + time;
+        Debug.Log("Timer Started");
+        for (int i = 0; i < 30; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            timerText.text = "Time Left: " + (--time); 
+        }
+        Debug.Log(SceneManager.GetActiveScene().buildIndex);
+        playerData.GetComponent<PlayerData>().SetHighScore(SceneManager.GetActiveScene().buildIndex, score);
+        SceneManager.LoadScene("LobbyScene");
     }
 }
