@@ -55,6 +55,11 @@ public class PlayerControl : MonoBehaviour
             movementSpeed = walkSpeed;
         }
         CheckIfOnGround();
+
+        if(transform.position.y < -10)
+        {
+            transform.position = Vector3.zero + Vector3.up * 3;
+        }
     }
 
     void LateUpdate()
