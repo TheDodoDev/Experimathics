@@ -10,15 +10,17 @@ using UnityEngine.UI;
 public class TitleScreenManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton, loginButton, registerButton, nameInputText, passwordInputText;
+    [SerializeField] GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton, 
+        loginButton, registerButton, nameInputText, passwordInputText, codeInputText, keyInput, keyInputText;
 
     private const int STUDENT = 0;
     private const int TEACHER = 1;
     private int mode = -1;
 
+    private CloudSaveManager cloudSaveManager;
     void Start()
     {
-        
+        cloudSaveManager = GameObject.Find("CloudSaveManager").GetComponent<CloudSaveManager>();
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(true);
             loginButton.SetActive(true);
             registerButton.SetActive(true);
+            keyInput.SetActive(true);
         }
         if (mode == TEACHER)
         {
@@ -44,6 +47,7 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(true);
             loginButton.SetActive(true);
             registerButton.SetActive(true);
+            keyInput.SetActive(true);
         }
         if(mode == -1)
         {
@@ -55,6 +59,7 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(false);
             loginButton.SetActive(false);
             registerButton.SetActive(false);
+            keyInput.SetActive(false);
         }
     }
 
@@ -65,7 +70,20 @@ public class TitleScreenManager : MonoBehaviour
 
     public void CreateUser()
     {
-        
+        string username = nameInputText.GetComponent<TextMeshProUGUI>().text;
+        string password = passwordInputText.GetComponent<TextMeshProUGUI>().text;
+        string classcode = codeInputText.GetComponent<TextMeshProUGUI>().text;
+        if(username.Length > 1 && password.Length > 1 && classcode.Length > 1)
+            cloudSaveManager.CreateAccount(mode, username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1), classcode.Substring(0, classcode.Length - 1));
+    }
+
+    public void LoadUserData()
+    {
+        string username = nameInputText.GetComponent<TextMeshProUGUI>().text;
+        string password = passwordInputText.GetComponent<TextMeshProUGUI>().text;
+        string key = keyInputText.GetComponent<TextMeshProUGUI>().text;
+        if(username.Length > 1 && password.Length > 1 && key.Length > 1)
+            cloudSaveManager.LoadData(username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1), key.Substring(0, key.Length - 1));
     }
 
     public void Login()
@@ -97,4 +115,6 @@ public class TitleScreenManager : MonoBehaviour
         }
         return false;
     }
+
+    
 }
