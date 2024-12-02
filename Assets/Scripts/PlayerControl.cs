@@ -40,7 +40,7 @@ public class PlayerControl : MonoBehaviour
             airMultiplier = 0.0f;
         }
         moveDirection = orientation.forward * verticalInput * airMultiplier + orientation.right * horizontalInput * airMultiplier;
-        
+        Debug.Log(moveDirection);
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);

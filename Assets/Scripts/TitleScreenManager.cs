@@ -10,13 +10,14 @@ using UnityEngine.UI;
 public class TitleScreenManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton, 
-        loginButton, registerButton, nameInputText, passwordInputText, codeInputText, keyInput, keyInputText;
+    [SerializeField]
+    GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton,
+        loginButton, registerButton, nameInputText, passwordInputText, codeInputText;
 
     private const int STUDENT = 0;
     private const int TEACHER = 1;
     private int mode = -1;
-
+    string masterserverID = "q7ppzvhqYCKkZpL2AehZVIbfWzc6";
     private CloudSaveManager cloudSaveManager;
     void Start()
     {
@@ -36,7 +37,6 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(true);
             loginButton.SetActive(true);
             registerButton.SetActive(true);
-            keyInput.SetActive(true);
         }
         if (mode == TEACHER)
         {
@@ -47,7 +47,6 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(true);
             loginButton.SetActive(true);
             registerButton.SetActive(true);
-            keyInput.SetActive(true);
         }
         if(mode == -1)
         {
@@ -59,7 +58,6 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(false);
             loginButton.SetActive(false);
             registerButton.SetActive(false);
-            keyInput.SetActive(false);
         }
     }
 
@@ -72,7 +70,15 @@ public class TitleScreenManager : MonoBehaviour
     {
         string username = nameInputText.GetComponent<TextMeshProUGUI>().text;
         string password = passwordInputText.GetComponent<TextMeshProUGUI>().text;
-        string classcode = codeInputText.GetComponent<TextMeshProUGUI>().text;
+        string classcode = "";
+        if (mode == STUDENT)
+        {
+            classcode = codeInputText.GetComponent<TextMeshProUGUI>().text;
+        }
+        else
+        {
+            classcode = "null";
+        }
         if(username.Length > 1 && password.Length > 1 && classcode.Length > 1)
             cloudSaveManager.CreateAccount(mode, username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1), classcode.Substring(0, classcode.Length - 1));
     }
@@ -81,26 +87,11 @@ public class TitleScreenManager : MonoBehaviour
     {
         string username = nameInputText.GetComponent<TextMeshProUGUI>().text;
         string password = passwordInputText.GetComponent<TextMeshProUGUI>().text;
-        string key = keyInputText.GetComponent<TextMeshProUGUI>().text;
-        if(username.Length > 1 && password.Length > 1 && key.Length > 1)
-            cloudSaveManager.LoadData(username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1), key.Substring(0, key.Length - 1));
-    }
-
-    public void Login()
-    {
-        if (mode == STUDENT)
-        {
-            if (CheckIfStringsEqual(nameInputText.GetComponent<TextMeshProUGUI>().text.ToString(), "S") && CheckIfStringsEqual(passwordInputText.GetComponent<TextMeshProUGUI>().text.ToString(), "1"))
-            {
-
-                SceneManager.LoadScene("LobbyScene");
-            }
-        }
+        if(username.Length > 1 && password.Length > 1) cloudSaveManager.LoadData(username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1));
     }
 
     public bool CheckIfStringsEqual(string s1, string s2)
     {
-        Debug.Log(s1[^1]);
         if (s1.Length - 1 == s2.Length)
         {
             for (int i = 0; i < s1.Length - 1; i++)
