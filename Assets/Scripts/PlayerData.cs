@@ -12,7 +12,6 @@ public class PlayerData : MonoBehaviour
 {
     // Start is called before the first frame update
     private int highScore_AimematchicsI, highScore_AimematchicsII;
-    string masterserverID = "q7ppzvhqYCKkZpL2AehZVIbfWzc6";
     [SerializeField] CloudSaveManager cloudSaveManager;
     void Start()
     {

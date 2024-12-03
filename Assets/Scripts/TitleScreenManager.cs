@@ -17,7 +17,6 @@ public class TitleScreenManager : MonoBehaviour
     private const int STUDENT = 0;
     private const int TEACHER = 1;
     private int mode = -1;
-    string masterserverID = "q7ppzvhqYCKkZpL2AehZVIbfWzc6";
     private CloudSaveManager cloudSaveManager;
     void Start()
     {

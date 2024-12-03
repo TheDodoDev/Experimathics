@@ -9,12 +9,19 @@ using Unity.Services.Authentication.PlayerAccounts;
 using System;
 using Unity.Services.CloudSave.Models.Data.Player;
 using UnityEngine.SceneManagement;
+using System.Security.Cryptography;
+using System.Text;
+using System.Collections.Specialized;
+using System.Net.Http;
 public class CloudSaveManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] PlayerData playerDataScript;
+    TeacherViewManager teacherViewManagerScript;
+    private bool found = false;
     private async void Awake()
     {
+        found = false;
         await UnityServices.InitializeAsync();
     }
 
@@ -24,6 +31,14 @@ public class CloudSaveManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    public void Update()
+    {
+        if(SceneManager.GetActiveScene().name == "TeacherViewScene" && !found)
+        {
+            teacherViewManagerScript = GameObject.Find("TeacherViewManager").GetComponent<TeacherViewManager>();
+            found = true;
+        }
+    }
     public async void CreateAccount(int mode, string username, string password, string classcode)
     {
         string accountType = "";
@@ -146,6 +161,33 @@ public class CloudSaveManager : MonoBehaviour
         }
     }
 
+    public async void AddStudent(string id)
+    {
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "students" }, new LoadOptions(new PublicReadAccessClassOptions()));
+        string list = "";
+        if (playerData.TryGetValue("students", out var firstkeyName))
+        {
+            list = firstkeyName.Value.GetAs<string>();
+            Debug.Log($"Aimemathics I High Score: {firstkeyName.Value.GetAs<string>()}");
+            await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "students", list + "," + id } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
+
+        }
+        else
+        {
+            await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "students", id } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
+        }
+    }
+
+    public async void GetStudents()
+    {
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "students" }, new LoadOptions(new PublicReadAccessClassOptions()));
+        string list = "";
+        if (playerData.TryGetValue("students", out var firstkeyName))
+        {
+            list = firstkeyName.Value.GetAs<string>();
+        }
+        teacherViewManagerScript.SetStudentList(list);
+    }
     public bool CheckIfStringsEqual(string s1, string s2)
     {
         if (s1.Length == s2.Length)
