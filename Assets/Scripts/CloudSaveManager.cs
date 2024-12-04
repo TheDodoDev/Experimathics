@@ -72,7 +72,7 @@ public class CloudSaveManager : MonoBehaviour
     {
         await SignInWithUsernamePasswordAsync(username, password);
 
-        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "hsA1", "hsA2", "accountType" }, new LoadOptions(new PublicReadAccessClassOptions()));
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "hsA1", "hsA2", "accounttype" }, new LoadOptions(new PublicReadAccessClassOptions()));
 
         int hsA1 = 0;
         int hsA2 = 0;
@@ -87,13 +87,12 @@ public class CloudSaveManager : MonoBehaviour
             hsA2 = secondkeyName.Value.GetAs<int>();
             Debug.Log($"Aimemathics II High Score: {secondkeyName.Value.GetAs<string>()}");
         }
-        if (playerData.TryGetValue("hsA2", out var thirdkeyName))
+        if (playerData.TryGetValue("accounttype", out var thirdkeyName))
         {
             accountType = thirdkeyName.Value.GetAs<string>();
-            Debug.Log($"Aimemathics II High Score: {thirdkeyName.Value.GetAs<string>()}");
         }
         playerDataScript.SetHighScore(hsA1, hsA2, 0, 0);
-
+        Debug.Log(accountType);
         if (CheckIfStringsEqual(accountType, "STUDENT"))
         {
             SceneManager.LoadScene("LobbyScene");
@@ -185,6 +184,7 @@ public class CloudSaveManager : MonoBehaviour
         if (playerData.TryGetValue("students", out var firstkeyName))
         {
             list = firstkeyName.Value.GetAs<string>();
+            Debug.Log(firstkeyName.Value.GetAs<string>());
         }
         teacherViewManagerScript.SetStudentList(list);
     }

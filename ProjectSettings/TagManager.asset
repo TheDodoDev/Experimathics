@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Student Button
   layers:
   - Default
   - TransparentFX
