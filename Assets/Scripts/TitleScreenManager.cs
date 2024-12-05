@@ -11,8 +11,8 @@ public class TitleScreenManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    GameObject nameInput, passwordInput, codeInput, studentButton, teacherButton, backButton,
-        loginButton, registerButton, nameInputText, passwordInputText, codeInputText;
+    GameObject nameInput, passwordInput, firstNameInput, lastNameInput, studentButton, teacherButton, backButton,
+        loginButton, registerButton, nameInputText, passwordInputText, firstNameInputText, lastNameInputText;
 
     private const int STUDENT = 0;
     private const int TEACHER = 1;
@@ -32,10 +32,11 @@ public class TitleScreenManager : MonoBehaviour
             teacherButton.SetActive(false);
             nameInput.SetActive(true);
             passwordInput.SetActive(true);
-            codeInput.SetActive(true);
             backButton.SetActive(true);
             loginButton.SetActive(true);
             registerButton.SetActive(true);
+            firstNameInput.SetActive(true);
+            lastNameInput.SetActive(true);
         }
         if (mode == TEACHER)
         {
@@ -46,6 +47,8 @@ public class TitleScreenManager : MonoBehaviour
             backButton.SetActive(true);
             loginButton.SetActive(true);
             registerButton.SetActive(true);
+            firstNameInput.SetActive(true);
+            lastNameInput.SetActive(true);
         }
         if(mode == -1)
         {
@@ -53,10 +56,11 @@ public class TitleScreenManager : MonoBehaviour
             teacherButton.SetActive(true);
             nameInput.SetActive(false);
             passwordInput.SetActive(false);
-            codeInput.SetActive(false);
             backButton.SetActive(false);
             loginButton.SetActive(false);
             registerButton.SetActive(false);
+            firstNameInput.SetActive(false);
+            lastNameInput.SetActive(false);
         }
     }
 
@@ -69,17 +73,10 @@ public class TitleScreenManager : MonoBehaviour
     {
         string username = nameInputText.GetComponent<TextMeshProUGUI>().text;
         string password = passwordInputText.GetComponent<TextMeshProUGUI>().text;
-        string classcode = "";
-        if (mode == STUDENT)
-        {
-            classcode = codeInputText.GetComponent<TextMeshProUGUI>().text;
-        }
-        else
-        {
-            classcode = "null";
-        }
-        if(username.Length > 1 && password.Length > 1 && classcode.Length > 1)
-            cloudSaveManager.CreateAccount(mode, username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1), classcode.Substring(0, classcode.Length - 1));
+        string firstName = firstNameInputText.GetComponent<TextMeshProUGUI>().text;
+        string lastName = lastNameInputText.GetComponent<TextMeshProUGUI>().text;
+        if(username.Length > 1 && password.Length > 1 && firstName.Length > 1 && lastName.Length > 1)
+            cloudSaveManager.CreateAccount(mode, username.Substring(0, username.Length - 1), password.Substring(0, password.Length - 1), firstName.Substring(0, firstName.Length - 1), lastName.Substring(0, lastName.Length - 1));
     }
 
     public void LoadUserData()

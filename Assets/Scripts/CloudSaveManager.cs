@@ -39,7 +39,7 @@ public class CloudSaveManager : MonoBehaviour
             found = true;
         }
     }
-    public async void CreateAccount(int mode, string username, string password, string classcode)
+    public async void CreateAccount(int mode, string username, string password, string firstName, string lastName)
     {
         string accountType = "";
         if (mode == 0)
@@ -49,11 +49,10 @@ public class CloudSaveManager : MonoBehaviour
         if (mode == 1)
         {
             accountType = "TEACHER";
-            classcode = "null";
         }
         Debug.Log(username + " " + password);
         await SignUpWithUsernamePasswordAsync(username, password);
-        var data = new Dictionary<string, object> { { "accounttype", accountType }, { "classcode", classcode }, { "hsA1", 0 }, { "hsA2", 0 } };
+        var data = new Dictionary<string, object> { { "accounttype", accountType }, { "firstName", firstName }, { "lastName", lastName }, { "hsA1", 0 }, { "hsA2", 0 } };
 
         await CloudSaveService.Instance.Data.Player.SaveAsync(data, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
 
@@ -80,12 +79,10 @@ public class CloudSaveManager : MonoBehaviour
         if (playerData.TryGetValue("hsA1", out var firstkeyName))
         {
             hsA1 = firstkeyName.Value.GetAs<int>();
-            Debug.Log($"Aimemathics I High Score: {firstkeyName.Value.GetAs<string>()}");
         }
         if (playerData.TryGetValue("hsA2", out var secondkeyName))
         {
             hsA2 = secondkeyName.Value.GetAs<int>();
-            Debug.Log($"Aimemathics II High Score: {secondkeyName.Value.GetAs<string>()}");
         }
         if (playerData.TryGetValue("accounttype", out var thirdkeyName))
         {
@@ -177,16 +174,34 @@ public class CloudSaveManager : MonoBehaviour
         }
     }
 
-    public async void GetStudents()
+    public async Task GetStudents()
     {
         var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "students" }, new LoadOptions(new PublicReadAccessClassOptions()));
         string list = "";
         if (playerData.TryGetValue("students", out var firstkeyName))
         {
             list = firstkeyName.Value.GetAs<string>();
-            Debug.Log(firstkeyName.Value.GetAs<string>());
         }
         teacherViewManagerScript.SetStudentList(list);
+        Debug.Log(list);
+    }
+
+    public async void GetCurrentStudent(string id)
+    {
+        Debug.Log(id);
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "firstName", "lastName" }, new LoadOptions(new PublicReadAccessClassOptions("jNu73eVXMhfGFdQuhvQ9okTVb8AU")));
+        string firstName = "";
+        string lastName = "";
+        if (playerData.TryGetValue("firstName", out var keyName))
+        {
+            firstName = keyName.Value.GetAs<string>();
+        }
+        if (playerData.TryGetValue("lastName", out var keyName1))
+        {
+            lastName = keyName1.Value.GetAs<string>();
+        }
+        Debug.Log(firstName + " " + lastName);
+        teacherViewManagerScript.SetName(firstName, lastName);
     }
     public bool CheckIfStringsEqual(string s1, string s2)
     {
@@ -194,7 +209,6 @@ public class CloudSaveManager : MonoBehaviour
         {
             for (int i = 0; i < s1.Length; i++)
             {
-                Debug.Log(s1[i] + " " + s2[i]);
                 if (s1[i] != s2[i])
                 {
                     return false;

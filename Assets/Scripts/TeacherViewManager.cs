@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.CloudSave.Models.Data.Player;
+using Unity.Services.CloudSave;
 using UnityEngine;
 
 public class TeacherViewManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    private string list = "";
+    private string list;
+    private string curFirst = "";
+    private string curLast = "";
     CloudSaveManager cloudSaveManager;
     [SerializeField] GameObject addStudentInput;
     [SerializeField] GameObject button;
     [SerializeField] GameObject canvas;
-    void Start()
+    async void Start()
     {
         cloudSaveManager = GameObject.Find("CloudSaveManager").GetComponent<CloudSaveManager>();
         UpdateView();
@@ -41,10 +45,11 @@ public class TeacherViewManager : MonoBehaviour
         UpdateView();
     }
 
-    public void UpdateView()
+    public async void UpdateView()
     {
-        cloudSaveManager.GetStudents();
-        string[] students = list.Split(',', System.StringSplitOptions.None);
+        await cloudSaveManager.GetStudents();
+        string[] students = list.Split(' ');
+        Debug.Log(list);
         foreach(string student in students)
         {
             Debug.Log(student);
@@ -56,7 +61,8 @@ public class TeacherViewManager : MonoBehaviour
             GameObject o = Instantiate(button);
             o.transform.SetParent(canvas.transform, false);
             o.transform.localPosition = new Vector3(col * 350 - 780, 330 - 150 * row, 0);
-            o.transform.GetComponentInChildren<TextMeshProUGUI>().text = student;
+            cloudSaveManager.GetCurrentStudent(student);
+            o.transform.GetComponentInChildren<TextMeshProUGUI>().text = curFirst + " " + curLast;
             if (col == 5)
             {
                 col = 0;
@@ -67,5 +73,11 @@ public class TeacherViewManager : MonoBehaviour
                 col++;
             }
         }
+    }
+
+    public void SetName(string curFirst, string curLast)
+    {
+        this.curFirst = curFirst;
+        this.curLast = curLast;
     }
 }
