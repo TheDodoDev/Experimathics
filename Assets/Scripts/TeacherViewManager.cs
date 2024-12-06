@@ -11,10 +11,13 @@ public class TeacherViewManager : MonoBehaviour
     private string list;
     private string curFirst = "";
     private string curLast = "";
+    private int curHSA1, curHSA2;
     CloudSaveManager cloudSaveManager;
     [SerializeField] GameObject addStudentInput;
     [SerializeField] GameObject button;
     [SerializeField] GameObject canvas;
+    [SerializeField] GameObject backButton;
+    [SerializeField] GameObject statsText;
     async void Start()
     {
         cloudSaveManager = GameObject.Find("CloudSaveManager").GetComponent<CloudSaveManager>();
@@ -63,6 +66,10 @@ public class TeacherViewManager : MonoBehaviour
             o.transform.localPosition = new Vector3(col * 350 - 780, 330 - 150 * row, 0);
             cloudSaveManager.GetCurrentStudent(student);
             o.transform.GetComponentInChildren<TextMeshProUGUI>().text = curFirst + " " + curLast;
+            o.GetComponent<ButtonData>().SetStudentID(student);
+            o.GetComponent<ButtonData>().SetName(curFirst + " " + curLast);
+            o.GetComponent<ButtonData>().SetHSA1(curHSA1);
+            o.GetComponent<ButtonData>().SetHSA2(curHSA2);
             if (col == 5)
             {
                 col = 0;
@@ -75,9 +82,17 @@ public class TeacherViewManager : MonoBehaviour
         }
     }
 
-    public void SetName(string curFirst, string curLast)
+    public void SetData(string curFirst, string curLast, int hsA1, int hsA2)
     {
         this.curFirst = curFirst;
         this.curLast = curLast;
+        this.curHSA1 = hsA1;
+        this.curHSA2 = hsA2;
+    }
+
+    public void GoBack()
+    {
+        backButton.SetActive(false);
+        statsText.SetActive(false);
     }
 }

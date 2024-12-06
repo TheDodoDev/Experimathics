@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7430670826330989255}
   - component: {fileID: 7072530386471573337}
   - component: {fileID: 4257839590605236275}
+  - component: {fileID: 3106988491320789930}
   m_Layer: 5
   m_Name: Button
   m_TagString: Student Button
@@ -121,7 +122,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7072530386471573337}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3106988491320789930}
+        m_TargetAssemblyTypeName: ButtonData, Assembly-CSharp
+        m_MethodName: StudentSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3106988491320789930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479618350613643985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e63852867f433749b98e97b75155f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backButton: {fileID: 0}
+  statsText: {fileID: 0}
 --- !u!1 &2560326858227314945
 GameObject:
   m_ObjectHideFlags: 0

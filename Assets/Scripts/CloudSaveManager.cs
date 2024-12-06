@@ -165,7 +165,7 @@ public class CloudSaveManager : MonoBehaviour
         {
             list = firstkeyName.Value.GetAs<string>();
             Debug.Log($"Aimemathics I High Score: {firstkeyName.Value.GetAs<string>()}");
-            await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "students", list + "," + id } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
+            await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "students", list + " " + id } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
 
         }
         else
@@ -189,9 +189,11 @@ public class CloudSaveManager : MonoBehaviour
     public async void GetCurrentStudent(string id)
     {
         Debug.Log(id);
-        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "firstName", "lastName" }, new LoadOptions(new PublicReadAccessClassOptions("jNu73eVXMhfGFdQuhvQ9okTVb8AU")));
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "firstName", "lastName", "hsA1", "hsA2" }, new LoadOptions(new PublicReadAccessClassOptions(id)));
         string firstName = "";
         string lastName = "";
+        int hsA1 = 0;
+        int hsA2 = 0;
         if (playerData.TryGetValue("firstName", out var keyName))
         {
             firstName = keyName.Value.GetAs<string>();
@@ -200,8 +202,16 @@ public class CloudSaveManager : MonoBehaviour
         {
             lastName = keyName1.Value.GetAs<string>();
         }
+        if (playerData.TryGetValue("hsA1", out var keyName2))
+        {
+            hsA1 = keyName2.Value.GetAs<int>();
+        }
+        if (playerData.TryGetValue("hsA2", out var keyName3))
+        {
+            hsA2 = keyName3.Value.GetAs<int>();
+        }
         Debug.Log(firstName + " " + lastName);
-        teacherViewManagerScript.SetName(firstName, lastName);
+        teacherViewManagerScript.SetData(firstName, lastName, hsA1, hsA2);
     }
     public bool CheckIfStringsEqual(string s1, string s2)
     {
