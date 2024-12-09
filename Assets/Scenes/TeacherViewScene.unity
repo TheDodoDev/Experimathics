@@ -2224,6 +2224,22 @@ PrefabInstance:
       propertyPath: backButton
       value: 
       objectReference: {fileID: 577798273}
+    - target: {fileID: 4257839590605236275, guid: 0ee060263bd59024bb23801e3da55381, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461281963145796097, guid: 0ee060263bd59024bb23801e3da55381, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072530386471573337, guid: 0ee060263bd59024bb23801e3da55381, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7430670826330989255, guid: 0ee060263bd59024bb23801e3da55381, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8537212125600154795, guid: 0ee060263bd59024bb23801e3da55381, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

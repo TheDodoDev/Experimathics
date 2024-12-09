@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonData : MonoBehaviour
 {
@@ -39,7 +40,9 @@ public class ButtonData : MonoBehaviour
         studentButtons = GameObject.FindGameObjectsWithTag("Student Button");
         foreach (GameObject button in studentButtons)
         {
-            button.SetActive(false);
+            button.GetComponent<Image>().enabled = false;
+            button.GetComponentInChildren<TextMeshProUGUI>().enabled = false;
+            button.GetComponent<Button>().enabled = false;
         }
         backButton.SetActive(true);
         statsText.SetActive(true);
@@ -47,9 +50,12 @@ public class ButtonData : MonoBehaviour
     }
     public void ResetView()
     {
-        foreach (GameObject button in studentButtons)
+        foreach (GameObject button in GameObject.FindGameObjectsWithTag("Student Button"))
         {
-            button.SetActive(true);
+            button.GetComponent<Image>().enabled = true;
+            button.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+            button.GetComponent<Button>().enabled = true;
+
         }
     }
 }

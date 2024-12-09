@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TeacherViewScene.unity
     guid: 42ba38fb31387054bb2359a170b288de
+  - enabled: 1
+    path: Assets/Scenes/Acromathics Scene.unity
+    guid: e5deff023a608204a93b10dea374a422
   m_configObjects: {}

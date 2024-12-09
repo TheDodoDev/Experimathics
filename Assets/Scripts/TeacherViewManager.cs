@@ -24,10 +24,15 @@ public class TeacherViewManager : MonoBehaviour
         UpdateView();
     }
 
+    async void Awake()
+    {
+        cloudSaveManager = GameObject.Find("CloudSaveManager").GetComponent<CloudSaveManager>();
+        UpdateView();
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !backButton.activeSelf)
         {
             UpdateView(); 
         }

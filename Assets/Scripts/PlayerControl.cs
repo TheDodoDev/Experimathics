@@ -40,8 +40,7 @@ public class PlayerControl : MonoBehaviour
             airMultiplier = 0.0f;
         }
         moveDirection = orientation.forward * verticalInput * airMultiplier + orientation.right * horizontalInput * airMultiplier;
-        Debug.Log(moveDirection);
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded && Input.GetKey(KeyCode.Space))
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
@@ -54,8 +53,6 @@ public class PlayerControl : MonoBehaviour
         {
             movementSpeed = walkSpeed;
         }
-        CheckIfOnGround();
-
         if(transform.position.y < -10)
         {
             transform.position = Vector3.zero + Vector3.up * 3;
@@ -72,20 +69,6 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    void CheckIfOnGround()
-    {
-
-        RaycastHit hit = new RaycastHit();
-
-        Physics.Raycast(transform.position + Vector3.down, Vector3.down, out hit, 0.1f);
-
-        Debug.DrawRay(transform.position + Vector3.down, Vector3.down * 0.1f, Color.green, 0.1f, false);
-
-        if (hit.collider != null && hit.collider.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -97,6 +80,27 @@ public class PlayerControl : MonoBehaviour
         {
             SceneManager.LoadScene("Aimemathics II Scene");
         }
+        if (other.gameObject.name == "Portal_Acromathics")
+        {
+            SceneManager.LoadScene("Acromat Scene");
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+        Debug.Log("Exited Ground");
     }
 
 }
