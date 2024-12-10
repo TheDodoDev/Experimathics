@@ -19,6 +19,7 @@ public class CloudSaveManager : MonoBehaviour
     [SerializeField] PlayerData playerDataScript;
     TeacherViewManager teacherViewManagerScript;
     private bool found = false;
+    private string playerID;
     private async void Awake()
     {
         found = false;
@@ -52,10 +53,10 @@ public class CloudSaveManager : MonoBehaviour
         }
         Debug.Log(username + " " + password);
         await SignUpWithUsernamePasswordAsync(username, password);
-        var data = new Dictionary<string, object> { { "accounttype", accountType }, { "firstName", firstName }, { "lastName", lastName }, { "hsA1", 0 }, { "hsA2", 0 } };
+        var data = new Dictionary<string, object> { { "accounttype", accountType }, { "firstName", firstName }, { "lastName", lastName }, { "hsA1", 0 }, { "hsA2", 0 }, { "hsAc", 0 } };
 
         await CloudSaveService.Instance.Data.Player.SaveAsync(data, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
-
+        playerID = AuthenticationService.Instance.PlayerId;
         if (CheckIfStringsEqual(accountType, "STUDENT"))
         {
             SceneManager.LoadScene("LobbyScene");
@@ -71,10 +72,11 @@ public class CloudSaveManager : MonoBehaviour
     {
         await SignInWithUsernamePasswordAsync(username, password);
 
-        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "hsA1", "hsA2", "accounttype" }, new LoadOptions(new PublicReadAccessClassOptions()));
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "hsA1", "hsA2", "hsAc", "accounttype" }, new LoadOptions(new PublicReadAccessClassOptions()));
 
         int hsA1 = 0;
         int hsA2 = 0;
+        int hsAc = 0;
         string accountType = "";
         if (playerData.TryGetValue("hsA1", out var firstkeyName))
         {
@@ -88,8 +90,12 @@ public class CloudSaveManager : MonoBehaviour
         {
             accountType = thirdkeyName.Value.GetAs<string>();
         }
-        playerDataScript.SetHighScore(hsA1, hsA2, 0, 0);
-        Debug.Log(accountType);
+        if (playerData.TryGetValue("hsAc", out var forthKeyName))
+        {
+            hsAc = forthKeyName.Value.GetAs<int>();
+        }
+        playerDataScript.SetHighScore(hsA1, hsA2, hsAc, 0, 0);
+        playerID = AuthenticationService.Instance.PlayerId;
         if (CheckIfStringsEqual(accountType, "STUDENT"))
         {
             SceneManager.LoadScene("LobbyScene");
@@ -154,6 +160,10 @@ public class CloudSaveManager : MonoBehaviour
         if (scene == 3)
         {
             await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "hsA2", score } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
+        }
+        if(scene == 5)
+        {
+            await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "hsAc", score } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
         }
     }
 
@@ -227,5 +237,10 @@ public class CloudSaveManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public string GetPlayerID()
+    {
+        return AuthenticationService.Instance.PlayerId;
     }
 }

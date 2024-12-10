@@ -24,6 +24,7 @@ public class PlayerControl : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         airMultiplier = 1f;
+        movementSpeed = walkSpeed;
     }
 
     // Update is called once per frame
@@ -40,18 +41,21 @@ public class PlayerControl : MonoBehaviour
             airMultiplier = 0.0f;
         }
         moveDirection = orientation.forward * verticalInput * airMultiplier + orientation.right * horizontalInput * airMultiplier;
-        if (isGrounded && Input.GetKey(KeyCode.Space))
+        if (isGrounded && Input.GetAxisRaw("Jump") != 0)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
-        if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift))
         {
-            movementSpeed = sprintSpeed;
-        }
-        else
-        {
-            movementSpeed = walkSpeed;
+            if (movementSpeed == walkSpeed)
+            {
+                movementSpeed = sprintSpeed;
+            }
+            else
+            {
+                movementSpeed = walkSpeed;
+            }
         }
         if(transform.position.y < -10)
         {
@@ -82,7 +86,7 @@ public class PlayerControl : MonoBehaviour
         }
         if (other.gameObject.name == "Portal_Acromathics")
         {
-            SceneManager.LoadScene("Acromat Scene");
+            SceneManager.LoadScene("Acromathics Scene");
         }
     }
 

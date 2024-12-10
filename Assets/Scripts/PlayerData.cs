@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 using Unity.Services.Authentication.PlayerAccounts;
 using System;
 using Unity.Services.CloudSave.Models.Data.Player;
+using TMPro;
 public class PlayerData : MonoBehaviour
 {
     // Start is called before the first frame update
-    private int highScore_AimematchicsI, highScore_AimematchicsII;
+    private int highScore_AimematchicsI, highScore_AimematchicsII, highScore_Acromathics;
+    
     [SerializeField] CloudSaveManager cloudSaveManager;
+    [SerializeField] GameObject playerIDText;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -22,7 +25,7 @@ public class PlayerData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();
     }
 
     public void SetHighScore(int scene, int score)
@@ -43,14 +46,23 @@ public class PlayerData : MonoBehaviour
                 cloudSaveManager.StoreData(scene, score);
             }
         }
+        if (scene == 5)
+        {
+            if (highScore_Acromathics < score)
+            {
+                highScore_Acromathics = score;
+                cloudSaveManager.StoreData(scene, score);
+            }
+        }
         Debug.Log("Aimemathics I High Score: " + highScore_AimematchicsI);
         Debug.Log("Aimemathics II High Score: " + highScore_AimematchicsII);
     }
 
-    public void SetHighScore(int hsA1, int hsA2, int p, int x)
+    public void SetHighScore(int hsA1, int hsA2, int hsAc, int p, int x)
     {
         highScore_AimematchicsI = hsA1;
         highScore_AimematchicsII = hsA2;
+        highScore_Acromathics = hsAc;
     }
     
 }

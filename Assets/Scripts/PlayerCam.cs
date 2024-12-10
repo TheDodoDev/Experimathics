@@ -111,6 +111,10 @@ public class PlayerCam : MonoBehaviour
     IEnumerator Timer()
     {
         int time = 30;
+        if (SceneManager.GetActiveScene().name == "Acromathics Scene")
+        {
+            time = 120;
+        }
         timerText.text = "Time Left: " + time;
         Debug.Log("Timer Started");
         for (int i = 0; i < 30; i++)
