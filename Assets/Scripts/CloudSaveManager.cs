@@ -51,7 +51,6 @@ public class CloudSaveManager : MonoBehaviour
         {
             accountType = "TEACHER";
         }
-        Debug.Log(username + " " + password);
         await SignUpWithUsernamePasswordAsync(username, password);
         var data = new Dictionary<string, object> { { "accounttype", accountType }, { "firstName", firstName }, { "lastName", lastName }, { "hsA1", 0 }, { "hsA2", 0 }, { "hsAc", 0 } };
 
@@ -192,13 +191,10 @@ public class CloudSaveManager : MonoBehaviour
         {
             list = firstkeyName.Value.GetAs<string>();
         }
-        teacherViewManagerScript.SetStudentList(list);
-        Debug.Log(list);
-    }
+        teacherViewManagerScript.SetStudentList(list);    }
 
-    public async void GetCurrentStudent(string id)
+    public async Task GetCurrentStudent(string id)
     {
-        Debug.Log(id);
         var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "firstName", "lastName", "hsA1", "hsA2" }, new LoadOptions(new PublicReadAccessClassOptions(id)));
         string firstName = "";
         string lastName = "";
@@ -220,7 +216,6 @@ public class CloudSaveManager : MonoBehaviour
         {
             hsA2 = keyName3.Value.GetAs<int>();
         }
-        Debug.Log(firstName + " " + lastName);
         teacherViewManagerScript.SetData(firstName, lastName, hsA1, hsA2);
     }
     public bool CheckIfStringsEqual(string s1, string s2)

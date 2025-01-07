@@ -8,9 +8,9 @@ public class ButtonData : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    string studentID;
-    string name;
-    int hsA1, hsA2;
+    [SerializeField] string studentID;
+    [SerializeField] string name;
+    [SerializeField] int hsA1, hsA2;
     [SerializeField] GameObject backButton;
     [SerializeField] GameObject statsText;
     private GameObject[] studentButtons;
@@ -43,10 +43,12 @@ public class ButtonData : MonoBehaviour
             button.GetComponent<Image>().enabled = false;
             button.GetComponentInChildren<TextMeshProUGUI>().enabled = false;
             button.GetComponent<Button>().enabled = false;
+            Debug.Log(button.GetComponent<ButtonData>().GetName());
         }
         backButton.SetActive(true);
         statsText.SetActive(true);
         statsText.GetComponent<TextMeshProUGUI>().text = "Aimemathics I High Score: " + hsA1 + "\nAimemathics II High Score: " + hsA2;
+        Debug.Log(studentID);
     }
     public void ResetView()
     {

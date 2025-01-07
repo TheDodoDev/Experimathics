@@ -18,13 +18,13 @@ public class TeacherViewManager : MonoBehaviour
     [SerializeField] GameObject canvas;
     [SerializeField] GameObject backButton;
     [SerializeField] GameObject statsText;
-    async void Start()
+    void Start()
     {
         cloudSaveManager = GameObject.Find("CloudSaveManager").GetComponent<CloudSaveManager>();
         UpdateView();
     }
 
-    async void Awake()
+    void Awake()
     {
         cloudSaveManager = GameObject.Find("CloudSaveManager").GetComponent<CloudSaveManager>();
         UpdateView();
@@ -41,7 +41,6 @@ public class TeacherViewManager : MonoBehaviour
     public void SetStudentList(string studentList)
     {
         this.list = studentList;
-        Debug.Log(list);
     }
 
     public void AddStudent()
@@ -55,13 +54,13 @@ public class TeacherViewManager : MonoBehaviour
 
     public async void UpdateView()
     {
+        GameObject[] studentButtons = GameObject.FindGameObjectsWithTag("Student Button");
+        foreach (GameObject button in studentButtons)
+        {
+            if(button.name != "Button") Destroy(button);
+        }
         await cloudSaveManager.GetStudents();
         string[] students = list.Split(' ');
-        Debug.Log(list);
-        foreach(string student in students)
-        {
-            Debug.Log(student);
-        }
         int row = 0;
         int col = 0;
         foreach (string student in students)
@@ -69,7 +68,7 @@ public class TeacherViewManager : MonoBehaviour
             GameObject o = Instantiate(button);
             o.transform.SetParent(canvas.transform, false);
             o.transform.localPosition = new Vector3(col * 350 - 780, 330 - 150 * row, 0);
-            cloudSaveManager.GetCurrentStudent(student);
+            await cloudSaveManager.GetCurrentStudent(student);
             o.transform.GetComponentInChildren<TextMeshProUGUI>().text = curFirst + " " + curLast;
             o.GetComponent<ButtonData>().SetStudentID(student);
             o.GetComponent<ButtonData>().SetName(curFirst + " " + curLast);
@@ -89,10 +88,11 @@ public class TeacherViewManager : MonoBehaviour
 
     public void SetData(string curFirst, string curLast, int hsA1, int hsA2)
     {
-        this.curFirst = curFirst;
-        this.curLast = curLast;
+        this.curFirst = new string(curFirst);
+        this.curLast = new string(curLast);
         this.curHSA1 = hsA1;
         this.curHSA2 = hsA2;
+        Debug.Log(this.curFirst);
     }
 
     public void GoBack()

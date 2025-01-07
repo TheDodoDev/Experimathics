@@ -9,6 +9,7 @@ using Unity.Services.Authentication.PlayerAccounts;
 using System;
 using Unity.Services.CloudSave.Models.Data.Player;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class PlayerData : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -16,16 +17,17 @@ public class PlayerData : MonoBehaviour
     
     [SerializeField] CloudSaveManager cloudSaveManager;
     [SerializeField] GameObject playerIDText;
+    [SerializeField] GameObject canvas;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        
+        DontDestroyOnLoad (canvas);
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();
+        if(SceneManager.GetActiveScene().name == "LobbyScene") playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();
     }
 
     public void SetHighScore(int scene, int score)
