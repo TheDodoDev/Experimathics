@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,8 @@ public class PlayerCam : MonoBehaviour
     [SerializeField] GameObject sphereBehaviorManager;
     [SerializeField] GameObject numPadManager;
     [SerializeField] Text scoreText, accuracyText, timerText;
+    [SerializeField] TextMeshProUGUI sensInput;
+    [SerializeField] Slider sensSlider;
     private GameObject playerData;
 
     private float xRotation, yRotation;
@@ -28,6 +31,7 @@ public class PlayerCam : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         if (SceneManager.GetActiveScene().name != "LobbyScene" && SceneManager.GetActiveScene().name != "TitleScene") StartCoroutine(Timer());
+        
     }
 
     // Update is called once per frame
@@ -125,5 +129,29 @@ public class PlayerCam : MonoBehaviour
         Debug.Log(SceneManager.GetActiveScene().buildIndex);
         playerData.GetComponent<PlayerData>().SetHighScore(SceneManager.GetActiveScene().buildIndex, score);
         SceneManager.LoadScene("LobbyScene");
+    }
+
+    public void AdjustSensWithSlider()
+    {
+        sensX = sensSlider.value;
+        sensY = sensSlider.value;
+        sensInput.text = sensX.ToString();
+    }
+
+    public void AdjustSensWithInput()
+    {
+        try
+        {
+            float sens = float.Parse(sensInput.text);
+            sensX = sens;
+            sensY = sens;
+            sensSlider.value = sens;
+        }
+        catch (Exception e)
+        {
+            sensX = sensSlider.value;
+            sensY = sensSlider.value;
+            sensInput.text = sensX.ToString();
+        }
     }
 }

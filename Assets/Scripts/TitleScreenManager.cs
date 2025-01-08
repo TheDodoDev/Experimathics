@@ -13,7 +13,6 @@ public class TitleScreenManager : MonoBehaviour
     [SerializeField]
     GameObject nameInput, passwordInput, firstNameInput, lastNameInput, studentButton, teacherButton, backButton,
         loginButton, registerButton, nameInputText, passwordInputText, firstNameInputText, lastNameInputText;
-
     private const int STUDENT = 0;
     private const int TEACHER = 1;
     private int mode = -1;
@@ -102,6 +101,4 @@ public class TitleScreenManager : MonoBehaviour
         }
         return false;
     }
-
-    
 }

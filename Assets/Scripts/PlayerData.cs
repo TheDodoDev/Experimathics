@@ -17,17 +17,22 @@ public class PlayerData : MonoBehaviour
     
     [SerializeField] CloudSaveManager cloudSaveManager;
     [SerializeField] GameObject playerIDText;
-    [SerializeField] GameObject canvas;
+    [SerializeField] GameObject menu;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad (canvas);
+        DontDestroyOnLoad (menu);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(SceneManager.GetActiveScene().name == "LobbyScene") playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();
+        if (SceneManager.GetActiveScene().name == "LobbyScene") playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();
+
+        if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name != "TitleScene")
+        {
+            menu.SetActive(!menu.activeSelf);
+        }
     }
 
     public void SetHighScore(int scene, int score)
