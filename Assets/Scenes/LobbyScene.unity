@@ -720,6 +720,8 @@ MonoBehaviour:
   scoreText: {fileID: 0}
   accuracyText: {fileID: 0}
   timerText: {fileID: 0}
+  sensInput: {fileID: 0}
+  sensSlider: {fileID: 0}
 --- !u!1 &1051345689
 GameObject:
   m_ObjectHideFlags: 0

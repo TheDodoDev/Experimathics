@@ -24,6 +24,7 @@ public class PlayerCam : MonoBehaviour
     private float xRotation, yRotation;
     private int score;
     private float shotsFired, shotsHit;
+    private bool canTurn;
     void Start()
     {
         playerData = GameObject.Find("PlayerData");
@@ -31,6 +32,7 @@ public class PlayerCam : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         if (SceneManager.GetActiveScene().name != "LobbyScene" && SceneManager.GetActiveScene().name != "TitleScene") StartCoroutine(Timer());
+        canTurn = true;
         
     }
 
@@ -47,16 +49,20 @@ public class PlayerCam : MonoBehaviour
             accuracyText.text = "Accuracy: " + Math.Round((shotsHit * 100f / shotsFired),2);
             Debug.Log(shotsHit + "/" + shotsFired);
         }
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX * 100;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY * 100;
+        if(canTurn)
+        {
+            float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX * 100;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY * 100;
 
-        yRotation += mouseX;
-        xRotation -= mouseY;
+            yRotation += mouseX;
+            xRotation -= mouseY;
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+            transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+            orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        }
+        
 
         if (Input.GetMouseButtonDown(0) && SceneManager.GetActiveScene().name == "Aimemathics I Scene")
         {
@@ -131,27 +137,14 @@ public class PlayerCam : MonoBehaviour
         SceneManager.LoadScene("LobbyScene");
     }
 
-    public void AdjustSensWithSlider()
+    public void SetSens(float sens)
     {
-        sensX = sensSlider.value;
-        sensY = sensSlider.value;
-        sensInput.text = sensX.ToString();
+        sensX = sens;
+        sensY = sens;
     }
 
-    public void AdjustSensWithInput()
+    public void SetCanTurn(bool b)
     {
-        try
-        {
-            float sens = float.Parse(sensInput.text);
-            sensX = sens;
-            sensY = sens;
-            sensSlider.value = sens;
-        }
-        catch (Exception e)
-        {
-            sensX = sensSlider.value;
-            sensY = sensSlider.value;
-            sensInput.text = sensX.ToString();
-        }
+        canTurn = b;
     }
 }
