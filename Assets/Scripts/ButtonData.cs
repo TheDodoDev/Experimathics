@@ -10,7 +10,7 @@ public class ButtonData : MonoBehaviour
 
     [SerializeField] string studentID;
     [SerializeField] string name;
-    [SerializeField] int hsA1, hsA2;
+    [SerializeField] int hsA1, hsA2, hsAc;
     [SerializeField] GameObject backButton;
     [SerializeField] GameObject statsText;
     private GameObject[] studentButtons;
@@ -35,6 +35,7 @@ public class ButtonData : MonoBehaviour
     public void SetName(string name) { this.name = name; }
     public void SetHSA1(int hsA1) { this.hsA1 = hsA1; }
     public void SetHSA2(int hsA2) { this.hsA2 = hsA2; }
+    public void SetHSAC(int hsAc) { this.hsAc = hsAc; }
     public void StudentSelected()
     {
         studentButtons = GameObject.FindGameObjectsWithTag("Student Button");
@@ -47,7 +48,7 @@ public class ButtonData : MonoBehaviour
         }
         backButton.SetActive(true);
         statsText.SetActive(true);
-        statsText.GetComponent<TextMeshProUGUI>().text = "Aimemathics I High Score: " + hsA1 + "\nAimemathics II High Score: " + hsA2;
+        statsText.GetComponent<TextMeshProUGUI>().text = "Aimemathics I High Score: " + hsA1 + "\nAimemathics II High Score: " + hsA2 + "\nAcromathics High Score: " + hsAc;
         Debug.Log(studentID);
     }
     public void ResetView()

@@ -195,11 +195,12 @@ public class CloudSaveManager : MonoBehaviour
 
     public async Task GetCurrentStudent(string id)
     {
-        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "firstName", "lastName", "hsA1", "hsA2" }, new LoadOptions(new PublicReadAccessClassOptions(id)));
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "firstName", "lastName", "hsA1", "hsA2", "hsAc" }, new LoadOptions(new PublicReadAccessClassOptions(id)));
         string firstName = "";
         string lastName = "";
         int hsA1 = 0;
         int hsA2 = 0;
+        int hsAc = 0;
         if (playerData.TryGetValue("firstName", out var keyName))
         {
             firstName = keyName.Value.GetAs<string>();
@@ -216,7 +217,11 @@ public class CloudSaveManager : MonoBehaviour
         {
             hsA2 = keyName3.Value.GetAs<int>();
         }
-        teacherViewManagerScript.SetData(firstName, lastName, hsA1, hsA2);
+        if (playerData.TryGetValue("hsAc", out var keyName4))
+        {
+            hsAc = keyName4.Value.GetAs<int>();
+        }
+        teacherViewManagerScript.SetData(firstName, lastName, hsA1, hsA2, hsAc);
     }
     public bool CheckIfStringsEqual(string s1, string s2)
     {

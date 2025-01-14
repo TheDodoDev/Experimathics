@@ -11,7 +11,7 @@ public class TeacherViewManager : MonoBehaviour
     private string list;
     private string curFirst = "";
     private string curLast = "";
-    private int curHSA1, curHSA2;
+    private int curHSA1, curHSA2, curHSAC;
     CloudSaveManager cloudSaveManager;
     [SerializeField] GameObject addStudentInput;
     [SerializeField] GameObject button;
@@ -76,6 +76,7 @@ public class TeacherViewManager : MonoBehaviour
                 o.GetComponent<ButtonData>().SetName(curFirst + " " + curLast);
                 o.GetComponent<ButtonData>().SetHSA1(curHSA1);
                 o.GetComponent<ButtonData>().SetHSA2(curHSA2);
+                o.GetComponent<ButtonData>().SetHSAC(curHSAC);
                 if (col == 5)
                 {
                     col = 0;
@@ -89,12 +90,13 @@ public class TeacherViewManager : MonoBehaviour
         }
     }
 
-    public void SetData(string curFirst, string curLast, int hsA1, int hsA2)
+    public void SetData(string curFirst, string curLast, int hsA1, int hsA2, int hsAc)
     {
         this.curFirst = new string(curFirst);
         this.curLast = new string(curLast);
         this.curHSA1 = hsA1;
         this.curHSA2 = hsA2;
+        this.curHSAC = hsAc;
         Debug.Log(this.curFirst);
     }
 

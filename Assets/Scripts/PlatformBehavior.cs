@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class PlatformBehavior : MonoBehaviour
@@ -28,9 +29,14 @@ public class PlatformBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Incorrect")
+        if (collision.gameObject.tag == "Player" && gameObject.tag == "Incorrect")
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
+        else if (collision.gameObject.tag == "Player" && gameObject.tag == "Correct")
+        {
+            acromathicsManager.SetPlatform();
+        }
+        Debug.Log(collision.gameObject.tag);
     }
 }

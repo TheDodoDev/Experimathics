@@ -128,10 +128,14 @@ public class PlayerCam : MonoBehaviour
         }
         timerText.text = "Time Left: " + time;
         Debug.Log("Timer Started");
-        while(time > 0)
+        while (time > 0)
         {
             yield return new WaitForSeconds(1f);
-            timerText.text = "Time Left: " + (--time); 
+            timerText.text = "Time Left: " + (--time);
+            if (transform.parent.position.y < -10)
+            {
+                time = 0;
+            }
         }
         Debug.Log(SceneManager.GetActiveScene().buildIndex);
         playerData.GetComponent<PlayerData>().SetHighScore(SceneManager.GetActiveScene().buildIndex, score);
@@ -147,5 +151,10 @@ public class PlayerCam : MonoBehaviour
     public void SetCanTurn(bool b)
     {
         canTurn = b;
+    }
+
+    public void IncrementScore()
+    {
+        score++;
     }
 }

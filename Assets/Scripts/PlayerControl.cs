@@ -72,7 +72,7 @@ public class PlayerControl : MonoBehaviour
                 movementSpeed = walkSpeed;
             }
         }
-        if(transform.position.y < -10)
+        if(transform.position.y < -15)
         {
             transform.position = Vector3.zero + Vector3.up * 3;
         }
@@ -110,7 +110,9 @@ public class PlayerControl : MonoBehaviour
         if(collision.collider.CompareTag("Ground"))
         {
             isGrounded = true;
+            Debug.Log("Entered Ground");
         }
+
     }
 
     private void OnCollisionExit(Collision collision)
@@ -118,8 +120,9 @@ public class PlayerControl : MonoBehaviour
         if (collision.collider.CompareTag("Ground"))
         {
             isGrounded = false;
+            Debug.Log("Exited Ground");
+
         }
-        Debug.Log("Exited Ground");
     }
 
     public void SetSprintToggle(bool toggle)

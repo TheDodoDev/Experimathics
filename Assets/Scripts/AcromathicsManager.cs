@@ -106,4 +106,11 @@ public class AcromathicsManager : MonoBehaviour
     {
         return correctIndex;
     }
+
+    public void SetPlatform()
+    {
+        platform.transform.position = platforms[correctIndex].transform.position;
+        Randomize();
+        GameObject.Find("Player").GetComponentInChildren<PlayerCam>().IncrementScore();
+    }
 }
