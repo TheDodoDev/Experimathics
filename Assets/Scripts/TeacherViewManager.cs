@@ -43,11 +43,11 @@ public class TeacherViewManager : MonoBehaviour
         this.list = studentList;
     }
 
-    public void AddStudent()
+    public async void AddStudent()
     {
         string id = addStudentInput.GetComponent<TextMeshProUGUI>().text;
         id = id.Substring(0, id.Length - 1);
-        cloudSaveManager.AddStudent(id);
+        await cloudSaveManager.AddStudent(id);
         addStudentInput.GetComponent<TextMeshProUGUI>().text = "";
         UpdateView();
     }
@@ -65,23 +65,26 @@ public class TeacherViewManager : MonoBehaviour
         int col = 0;
         foreach (string student in students)
         {
-            GameObject o = Instantiate(button);
-            o.transform.SetParent(canvas.transform, false);
-            o.transform.localPosition = new Vector3(col * 350 - 780, 330 - 150 * row, 0);
-            await cloudSaveManager.GetCurrentStudent(student);
-            o.transform.GetComponentInChildren<TextMeshProUGUI>().text = curFirst + " " + curLast;
-            o.GetComponent<ButtonData>().SetStudentID(student);
-            o.GetComponent<ButtonData>().SetName(curFirst + " " + curLast);
-            o.GetComponent<ButtonData>().SetHSA1(curHSA1);
-            o.GetComponent<ButtonData>().SetHSA2(curHSA2);
-            if (col == 5)
+            if (student != string.Empty)
             {
-                col = 0;
-                row++;
-            }
-            else
-            {
-                col++;
+                GameObject o = Instantiate(button);
+                o.transform.SetParent(canvas.transform, false);
+                o.transform.localPosition = new Vector3(col * 350 - 780, 330 - 150 * row, 0);
+                await cloudSaveManager.GetCurrentStudent(student);
+                o.transform.GetComponentInChildren<TextMeshProUGUI>().text = curFirst + " " + curLast;
+                o.GetComponent<ButtonData>().SetStudentID(student);
+                o.GetComponent<ButtonData>().SetName(curFirst + " " + curLast);
+                o.GetComponent<ButtonData>().SetHSA1(curHSA1);
+                o.GetComponent<ButtonData>().SetHSA2(curHSA2);
+                if (col == 5)
+                {
+                    col = 0;
+                    row++;
+                }
+                else
+                {
+                    col++;
+                }
             }
         }
     }

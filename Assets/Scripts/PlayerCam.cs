@@ -16,6 +16,7 @@ public class PlayerCam : MonoBehaviour
     [SerializeField] Transform orientation;
     [SerializeField] GameObject sphereBehaviorManager;
     [SerializeField] GameObject numPadManager;
+    [SerializeField] AcromathicsManager acromathicsManager;
     [SerializeField] Text scoreText, accuracyText, timerText;
     [SerializeField] TextMeshProUGUI sensInput;
     [SerializeField] Slider sensSlider;
@@ -127,7 +128,7 @@ public class PlayerCam : MonoBehaviour
         }
         timerText.text = "Time Left: " + time;
         Debug.Log("Timer Started");
-        for (int i = 0; i < 30; i++)
+        while(time > 0)
         {
             yield return new WaitForSeconds(1f);
             timerText.text = "Time Left: " + (--time); 

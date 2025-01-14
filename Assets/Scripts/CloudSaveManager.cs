@@ -166,7 +166,7 @@ public class CloudSaveManager : MonoBehaviour
         }
     }
 
-    public async void AddStudent(string id)
+    public async Task AddStudent(string id)
     {
         var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "students" }, new LoadOptions(new PublicReadAccessClassOptions()));
         string list = "";

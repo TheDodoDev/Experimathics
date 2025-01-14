@@ -21,6 +21,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] GameObject menu;
     [SerializeField] TMP_InputField sensInput;
     [SerializeField] Slider sensSlider;
+    [SerializeField] Toggle sprintToggle;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -117,6 +118,11 @@ public class PlayerData : MonoBehaviour
             GameObject.Find("Player").transform.GetChild(0).GetComponent<PlayerCam>().SetSens(sensSlider.value);
             sensInput.text = sensSlider.value.ToString("#.##");
         }
+    }
+
+    public void ToggleSprint()
+    {
+        GameObject.Find("Player").GetComponent<PlayerControl>().SetSprintToggle(sprintToggle.isOn);
     }
 
 }

@@ -72,7 +72,7 @@ public class SphereBehavior : MonoBehaviour
                     factors.Add(operand1 / i);
                 }
             }
-            operand2 = factors[UnityEngine.Random.Range(0, factors.Count - 1)];
+            operand2 = factors[UnityEngine.Random.Range(0, factors.Count)];
             target = operand1 / operand2;
             op = " / ";
         }

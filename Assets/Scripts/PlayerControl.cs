@@ -19,6 +19,7 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody rb;
     private bool isGrounded;
     private float airMultiplier;
+    private bool toggleSprint;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -46,11 +47,25 @@ public class PlayerControl : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
-        if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift))
+        if (toggleSprint)
         {
-            if (movementSpeed == walkSpeed)
+            if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift))
             {
-                movementSpeed = sprintSpeed;
+                if (movementSpeed == walkSpeed)
+                {
+                    movementSpeed = sprintSpeed;
+                }
+                else
+                {
+                    movementSpeed = walkSpeed;
+                }
+            }
+        }
+        else if(!toggleSprint)
+        {
+            if (Input.GetKey(KeyCode.RightShift) || Input.GetKey(KeyCode.LeftShift))
+            {
+               movementSpeed = sprintSpeed;
             }
             else
             {
@@ -105,6 +120,11 @@ public class PlayerControl : MonoBehaviour
             isGrounded = false;
         }
         Debug.Log("Exited Ground");
+    }
+
+    public void SetSprintToggle(bool toggle)
+    {
+        this.toggleSprint = toggle;
     }
 
 }

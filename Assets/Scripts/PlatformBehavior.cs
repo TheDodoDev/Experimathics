@@ -7,6 +7,7 @@ public class PlatformBehavior : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] GameObject player;
     [SerializeField] PhysicMaterial slipperyMat, floorMat;
+    [SerializeField] AcromathicsManager acromathicsManager;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -22,6 +23,14 @@ public class PlatformBehavior : MonoBehaviour
         else
         {
             gameObject.GetComponent <BoxCollider>().material = floorMat;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Incorrect")
+        {
+            Destroy(gameObject);
         }
     }
 }
