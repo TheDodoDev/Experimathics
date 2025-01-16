@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Specialized;
 using System.Net.Http;
+using UnityEngine.SocialPlatforms.Impl;
 public class CloudSaveManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -52,7 +53,7 @@ public class CloudSaveManager : MonoBehaviour
             accountType = "TEACHER";
         }
         await SignUpWithUsernamePasswordAsync(username, password);
-        var data = new Dictionary<string, object> { { "accounttype", accountType }, { "firstName", firstName }, { "lastName", lastName }, { "hsA1", 0 }, { "hsA2", 0 }, { "hsAc", 0 } };
+        var data = new Dictionary<string, object> { { "accounttype", accountType }, { "firstName", firstName }, { "lastName", lastName }, { "hsA1", 0 }, { "hsA2", 0 }, { "hsAc", 0 }, { "sens", 1.0f }, { "toggleSprint", false } };
 
         await CloudSaveService.Instance.Data.Player.SaveAsync(data, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
         playerID = AuthenticationService.Instance.PlayerId;
@@ -71,12 +72,14 @@ public class CloudSaveManager : MonoBehaviour
     {
         await SignInWithUsernamePasswordAsync(username, password);
 
-        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "hsA1", "hsA2", "hsAc", "accounttype" }, new LoadOptions(new PublicReadAccessClassOptions()));
+        var playerData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "hsA1", "hsA2", "hsAc", "accounttype", "sens", "toggleSprint" }, new LoadOptions(new PublicReadAccessClassOptions()));
 
         int hsA1 = 0;
         int hsA2 = 0;
         int hsAc = 0;
         string accountType = "";
+        float sens = 0.0f;
+        bool toggleSprint = false;
         if (playerData.TryGetValue("hsA1", out var firstkeyName))
         {
             hsA1 = firstkeyName.Value.GetAs<int>();
@@ -93,7 +96,15 @@ public class CloudSaveManager : MonoBehaviour
         {
             hsAc = forthKeyName.Value.GetAs<int>();
         }
-        playerDataScript.SetHighScore(hsA1, hsA2, hsAc, 0, 0);
+        if (playerData.TryGetValue("sens", out var fifthKeyName))
+        {
+            sens = fifthKeyName.Value.GetAs<float>();
+        }
+        if (playerData.TryGetValue("toggleSprint", out var sixthKeyName))
+        {
+            toggleSprint = sixthKeyName.Value.GetAs<bool>();
+        }
+        playerDataScript.SetHighScore(hsA1, hsA2, hsAc, sens, toggleSprint);
         playerID = AuthenticationService.Instance.PlayerId;
         if (CheckIfStringsEqual(accountType, "STUDENT"))
         {
@@ -164,6 +175,12 @@ public class CloudSaveManager : MonoBehaviour
         {
             await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "hsAc", score } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
         }
+    }
+
+    public async void UpdateSettings(float sens, bool toggle)
+    {
+        await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "sens", sens } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
+        await CloudSaveService.Instance.Data.Player.SaveAsync(new Dictionary<string, object> { { "toggleSprint", toggle } }, new Unity.Services.CloudSave.Models.Data.Player.SaveOptions(new PublicWriteAccessClassOptions()));
     }
 
     public async Task AddStudent(string id)

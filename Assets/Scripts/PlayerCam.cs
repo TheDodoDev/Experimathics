@@ -121,7 +121,7 @@ public class PlayerCam : MonoBehaviour
 
     IEnumerator Timer()
     {
-        int time = 30;
+        int time = 60;
         if (SceneManager.GetActiveScene().name == "Acromathics Scene")
         {
             time = 120;

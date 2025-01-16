@@ -22,23 +22,22 @@ public class PlayerData : MonoBehaviour
     [SerializeField] TMP_InputField sensInput;
     [SerializeField] Slider sensSlider;
     [SerializeField] Toggle sprintToggle;
+    bool loaded = false;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
         DontDestroyOnLoad (menu);
-    }
 
-
-    void Awake()
-    {
-        if (SceneManager.GetActiveScene().name != "TitleScene") AdjustSensWithSlider();
     }
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name == "LobbyScene")
+        if (SceneManager.GetActiveScene().name != "TitleScene")
         {
+            
             playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();
+            GameObject.Find("Player").transform.GetChild(0).GetComponent<PlayerCam>().SetSens(sensSlider.value);
+            GameObject.Find("Player").GetComponent<PlayerControl>().SetSprintToggle(sprintToggle.isOn);
         }
 
         if (Input.GetKeyDown(KeyCode.M) && SceneManager.GetActiveScene().name != "TitleScene")
@@ -54,6 +53,7 @@ public class PlayerData : MonoBehaviour
             {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+                cloudSaveManager.UpdateSettings(sensSlider.value, sprintToggle.isOn);
             }
 
             GameObject.Find("Player").transform.GetChild(0).GetComponent<PlayerCam>().SetCanTurn(!Cursor.visible);
@@ -91,13 +91,16 @@ public class PlayerData : MonoBehaviour
         Debug.Log("Aimemathics II High Score: " + highScore_AimematchicsII);
     }
 
-    public void SetHighScore(int hsA1, int hsA2, int hsAc, int p, int x)
+    public void SetHighScore(int hsA1, int hsA2, int hsAc, float sens, bool x)
     {
         highScore_AimematchicsI = hsA1;
         highScore_AimematchicsII = hsA2;
         highScore_Acromathics = hsAc;
+   
+        sensInput.text = sensSlider.value.ToString("#.##");
+        sensSlider.value = sens;
+        sprintToggle.isOn = x;
     }
-
     public void AdjustSensWithSlider()
     {
         if(SceneManager.GetActiveScene().name != "TitleScene") GameObject.Find("Player").transform.GetChild(0).GetComponent<PlayerCam>().SetSens(sensSlider.value);
@@ -115,14 +118,11 @@ public class PlayerData : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log(e);
-            GameObject.Find("Player").transform.GetChild(0).GetComponent<PlayerCam>().SetSens(sensSlider.value);
-            sensInput.text = sensSlider.value.ToString("#.##");
         }
     }
 
-    public void ToggleSprint()
+    public void ResetLoaded()
     {
-        GameObject.Find("Player").GetComponent<PlayerControl>().SetSprintToggle(sprintToggle.isOn);
     }
 
 }
