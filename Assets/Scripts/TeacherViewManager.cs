@@ -45,10 +45,10 @@ public class TeacherViewManager : MonoBehaviour
 
     public async void AddStudent()
     {
-        string id = addStudentInput.GetComponent<TextMeshProUGUI>().text;
+        string id = addStudentInput.GetComponent<TMP_InputField>().text;
         id = id.Substring(0, id.Length - 1);
         await cloudSaveManager.AddStudent(id);
-        addStudentInput.GetComponent<TextMeshProUGUI>().text = "";
+        addStudentInput.GetComponent<TMP_InputField>().text = "";
         UpdateView();
     }
 
@@ -63,7 +63,12 @@ public class TeacherViewManager : MonoBehaviour
         string[] students = list.Split(' ');
         int row = 0;
         int col = 0;
+        HashSet<string> studentIds = new HashSet<string>();
         foreach (string student in students)
+        {
+            studentIds.Add(student); 
+        }
+        foreach (string student in studentIds)
         {
             if (student != string.Empty)
             {

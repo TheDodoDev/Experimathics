@@ -32,7 +32,7 @@ public class PlayerData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name != "TitleScene")
+        if (SceneManager.GetActiveScene().name != "TitleScene" && SceneManager.GetActiveScene().name != "TeacherViewScene")
         {
             
             playerIDText.GetComponent<TextMeshProUGUI>().text = "Player ID: " + cloudSaveManager.GetPlayerID();

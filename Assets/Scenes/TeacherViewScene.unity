@@ -1338,7 +1338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd28047cfb975994a8e6eb07538a70eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addStudentInput: {fileID: 271957127}
+  addStudentInput: {fileID: 66756917}
   button: {fileID: 1727318547}
   canvas: {fileID: 643439386}
   backButton: {fileID: 577798273}
